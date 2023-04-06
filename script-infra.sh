@@ -249,7 +249,6 @@ az mariadb server create \
     --resource-group $GroupeDeRessource \
     --name $mdbserv \
     --ssl-enforcement Disabled \
-    --public-network-access Disabled \
     --location francecentral \
     --admin-user $UserMDB \
     --admin-password PIcciNO69200!MaRaTEa? \
