@@ -269,4 +269,4 @@ az mariadb server show \
     --resource-group $GroupeDeRessource \
     --name $mdbserv
 
-ssh -y -i .ssh/id_rsa $azureuser@$IpPublic -p 4221 
+ssh -i .ssh/id_rsa $azureuser@$IpPublic -p 4221 
