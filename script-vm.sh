@@ -38,13 +38,10 @@ sudo chown -R www-data:www-data /var/www/html/wordpress/wp-content/uploads/
 
 cd /var/www/html/wordpress
 
-# OFF SCRIPT
+echo "CREATE DATABASE wordpress" > dbm
 
-echo "CREATE DATABASE wordpress" > dbm.sql
+mysql -u fabio@mdbserv282511204 -p PIcciNO69200!MaRaTEa? -h mdbserv282511204.mariadb.database.azure.com < dbm
 
-mysql -u fabio@mdbserv282511204 -p PIcciNO69200!MaRaTEa? -h mdbserv282511204.mariadb.database.azure.com < dbm.sql
-
-# OFF SCRIPT
 
 # Copy and edit config file 
 
