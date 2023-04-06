@@ -31,7 +31,9 @@ myNATgatewayIP=msdocs-NAT-gateway-IP$randomIdentifier
 
 read -p "Entrez le nom de votre Groupe de Ressource: " GroupeDeRessource
 
-read -p "Entrez le nom de votre VM: " vm
+read -p "Entrez le nombre de VM souhaité: " NumberVM
+
+read -p "Entrez le nom de votre VM {s'il y en a plusieurs, seul le numéro changera}: " vm
 
 read -p "Entrez votre nom d'Utilisateur: " azureuser
 
@@ -41,7 +43,7 @@ read -p "Entrez votre nom d'utilsateur pour MariaDB: " UserMDB
 
 
 # Create a resource group
-echo "Creating $GroupeDeRessource in France Central"
+echo "***************Creating $GroupeDeRessource in France Central***************"
 
 az group create \
     --name $GroupeDeRessource \
@@ -49,7 +51,7 @@ az group create \
 
 
 # Create a virtual network and a subnet.
-echo "Creating $vNet and $subnet"
+echo "***************Creating $vNet and $subnet***************"
 
 az network vnet create \
     --resource-group $GroupeDeRessource \
@@ -60,7 +62,7 @@ az network vnet create \
     --subnet-prefixes 10.1.0.0/24
 
 # Create a zonal Standard public IP address for load balancer.
-echo "Creating $loadBalancerPublicIp"
+echo "***************Creating $loadBalancerPublicIp***************"
 
 az network public-ip create \
     --resource-group $GroupeDeRessource \
@@ -69,7 +71,7 @@ az network public-ip create \
     --zone $zone
 
 # Create an Azure Load Balancer.
-echo "Creating $loadBalancer with $frontEndIP and $backEndPool"
+echo "***************Creating $loadBalancer with $frontEndIP and $backEndPool***************"
 
 az network lb create \
     --resource-group $GroupeDeRessource \
@@ -80,7 +82,7 @@ az network lb create \
     --sku $ipSku
 
 # Create an LB probe on port 80.
-echo "Creating $probe80 in $loadBalancer"
+echo "***************Creating $probe80 in $loadBalancer***************"
 
 az network lb probe create \
     --resource-group $GroupeDeRessource \
@@ -90,7 +92,7 @@ az network lb probe create \
     --port 80
 
 # Create an LB rule for port 80.
-echo "Creating $loadBalancerRuleWeb for $loadBalancer"
+echo "***************Creating $loadBalancerRuleWeb for $loadBalancer***************"
 
 az network lb rule create \
     --resource-group $GroupeDeRessource \
@@ -106,10 +108,10 @@ az network lb rule create \
 #    --idle-timeout 15 \
 #    --enable-tcp-reset true
 
-# Create two NAT rules for port 22.
-echo "Creating two NAT rules named $loadBalancerRuleSSH"
+# Create $NumberVM NAT rules for port 22.
+echo "***************Creating $NumberVM NAT rules named $loadBalancerRuleSSH***************"
 
-  for i in `seq 1 2`
+  for i in `seq 1 $NumberVM`
   do
     az network lb inbound-nat-rule create \
     --resource-group $GroupeDeRessource \
@@ -122,14 +124,14 @@ echo "Creating two NAT rules named $loadBalancerRuleSSH"
   done
 
 # Create a network security group
-echo "Creating $networkSecurityGroup"
+echo "***************Creating $networkSecurityGroup***************"
 
 az network nsg create \
     --resource-group $GroupeDeRessource \
     --name $networkSecurityGroup
 
 # Create a network security group rule for port 22.
-echo "Creating $networkSecurityGroupRuleSSH in $networkSecurityGroup for port 22"
+echo "***************Creating $networkSecurityGroupRuleSSH in $networkSecurityGroup for port 22***************"
 
 az network nsg rule create \
     --resource-group $GroupeDeRessource \
@@ -146,7 +148,7 @@ az network nsg rule create \
 
 
 # Create a network security group rule for port 80.
-echo "Creating $networkSecurityGroupRuleWeb in $networkSecurityGroup for port 22"
+echo "***************Creating $networkSecurityGroupRuleWeb in $networkSecurityGroup for port 22***************"
 
 az network nsg rule create \
     --resource-group $GroupeDeRessource \
@@ -162,10 +164,10 @@ az network nsg rule create \
     --access allow \
     --priority 2000
 
-# Create two virtual network cards and associate with public IP address and NSG.
-echo "Creating two NICs named $nic for $vNet and $subnet"
+# Create $NumberVM virtual network cards and associate with public IP address and NSG.
+echo "***************Creating $NumberVM NICs named $nic for $vNet and $subnet***************"
 
-  for i in `seq 1 2`
+  for i in `seq 1 $NumberVM`
   do
     az network nic create \
     --resource-group $GroupeDeRessource \
@@ -178,14 +180,13 @@ echo "Creating two NICs named $nic for $vNet and $subnet"
     --lb-inbound-nat-rules $loadBalancerRuleSSH$i
   done
 
-# Create two virtual machines, this creates SSH keys if not present.
-echo "Creating two VMs named $vm with $nic using $image"
+# Create $NumberVM virtual machines, this creates SSH keys if not present.
+echo "***************Creating $NumberVM VMs named $vm with $nic using $image***************"
 
 
-# read -p "Entrez le nombre de VM souhaité: " END
 # for i in  $(seq 1 $END)
 
-  for i in `seq 1 2` 
+  for i in `seq 1 $NumberVM` 
   do
     az vm create \
     --resource-group $GroupeDeRessource \
@@ -198,7 +199,7 @@ echo "Creating two VMs named $vm with $nic using $image"
     --no-wait
   done
 
-  for i in `seq 1 2`
+  for i in `seq 1 $NumberVM`
   do
     az vm open-port \
     --port 80 \
