@@ -58,7 +58,7 @@ az network vnet create \
     --name $vNet \
     --location $location \
     --address-prefixes 10.1.0.0/16 \
-    --subnet-name $subnet
+    --subnet-name $subnet \
     --subnet-prefixes 10.1.0.0/24
 
 # Create a zonal Standard public IP address for load balancer.
