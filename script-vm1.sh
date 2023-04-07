@@ -38,7 +38,7 @@ sudo chown -R www-data:www-data /var/www/html/wordpress/wp-content/uploads/
 
 # Entrez dans le client
 
-mysql --user=fabio@mdbserv315445887 --password=PIcciNO69200!MaRaTEa? --host=mdbserv315445887.mariadb.database.azure.com -e "create database wordpress;"
+mysql --user=NomDeConnexionDeLAdministrateurDuServeur --password=MotDePasse --host=NomDuServeur -e "create database wordpress;"
 
 
 # Copier et et modifier le fichier config
@@ -47,9 +47,9 @@ mysql --user=fabio@mdbserv315445887 --password=PIcciNO69200!MaRaTEa? --host=mdbs
 sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 
 sudo sed -i "s/database_name_here/wordpress/" /var/www/html/wordpress/wp-config.php
-sudo sed -i "s/username_here/fabio@mdbserv315445887/" /var/www/html/wordpress/wp-config.php
-sudo sed -i "s/password_here/PIcciNO69200!MaRaTEa?/" /var/www/html/wordpress/wp-config.php
-sudo sed -i "s/localhost/mdbserv315445887.mariadb.database.azure.com/" /var/www/html/wordpress/wp-config.php
-
+sudo sed -i "s/username_here/NomDeConnexionDeLAdministrateurDuServeur7/" /var/www/html/wordpress/wp-config.php
+sudo sed -i "s/password_here/MotDePasse/" /var/www/html/wordpress/wp-config.php
+sudo sed -i "s/localhost/NomDuServeur/" /var/www/html/wordpress/wp-config.php
+sudo sed -i "s/It works!/VM1/" /var/www/html/index.html
 
 # Enjoy your Wordpress
