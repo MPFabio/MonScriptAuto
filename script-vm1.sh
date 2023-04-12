@@ -47,7 +47,7 @@ mysql --user=NomDeConnexionDeLAdministrateurDuServeur --password=MotDePasse --ho
 sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 
 sudo sed -i "s/database_name_here/wordpress/" /var/www/html/wordpress/wp-config.php
-sudo sed -i "s/username_here/NomDeConnexionDeLAdministrateurDuServeur7/" /var/www/html/wordpress/wp-config.php
+sudo sed -i "s/username_here/NomDeConnexionDeLAdministrateurDuServeur/" /var/www/html/wordpress/wp-config.php
 sudo sed -i "s/password_here/MotDePasse/" /var/www/html/wordpress/wp-config.php
 sudo sed -i "s/localhost/NomDuServeur/" /var/www/html/wordpress/wp-config.php
 sudo sed -i "s/It works!/VM1/" /var/www/html/index.html
